@@ -101,6 +101,7 @@
     //클릭 이벤트 함수
     const onClickTable = function (event) {
       //화면 표시
+      if (!(event.target.textContent === '')) return;
       event.target.textContent = turn;
 
       //승부 판단
