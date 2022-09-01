@@ -102,15 +102,18 @@
       if (checkWinner(target)) {
         $result.textContent = `Winner is ${turn} !`;
         $table.removeEventListener('click', onClickTable);
-        return true;
+        return;
       }
 
       //무승부 판단
       if (checkDraw()) {
         $result.textContent = `Draw !`;
         $table.removeEventListener('click', onClickTable);
-        return true;
+        return;
       }
+
+      //승부가 안났으면 턴 넘기기
+      turn = turn === 'O' ? 'X' : 'O';
     }
 
     //flag 변수
@@ -124,23 +127,17 @@
       event.target.textContent = turn;
 
       //승부 판단
-      const result = checkWinOrDraw(event.target);
-      if (result) return;
+      checkWinOrDraw(event.target);
 
-      //턴 넘기기
-      turn = turn === 'O' ? 'X' : 'O';
       if (turn === 'X') {
         clickable = false;
         setTimeout(() => {
-          //랜덤 칸 그리기
+          //랜덤 칸 선택
           const emptyCells = dataArray.flat().filter((el) => { return !(el.textContent) });
           const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
           randomCell.textContent = turn;
           //승부 판단
           checkWinOrDraw(randomCell);
-
-          //승부가 안났으면 턴 넘기기
-          turn = turn === 'O' ? 'X' : 'O';
           clickable = true;
         }, 1000)
 
