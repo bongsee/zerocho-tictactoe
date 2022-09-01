@@ -93,15 +93,8 @@
 
     //무승부 판단 함수
     const checkDraw = function () {
-      let count = 0;
-      dataArray.forEach((row) => {
-        row.forEach((cell) => {
-          if (cell.textContent) {
-            count++;
-          }
-        })
-      })
-      if (count === 9) return true;
+      if (dataArray.flat().every((cell) => cell.textContent)) return true;
+      return false;
     }
 
 
