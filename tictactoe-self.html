@@ -49,9 +49,11 @@
     //승패 판단 함수
     const checkWinner = function (target) {
       /*클릭한 위치 알아내기*/
+      console.dir(target)
+      console.dir(target.parentNode)
       let rowIndex;
       let cellIndex;
-      dataArray.forEach((rows, ri) => {
+      dataArray.forEach((rows, ri) => {     /*HTML 속성에 접근해서 클릭 위치 쉽게 따기 : rowIndex = target.parentNode.rowIndex; cellIndex = target.cellIndex*/
         rows.forEach((cells, ci) => {
           if (cells === target) {
             rowIndex = ri;
@@ -140,7 +142,6 @@
           checkWinOrDraw(randomCell);
           clickable = true;
         }, 1000)
-
       }
     }
     $table.addEventListener('click', onClickTable)
