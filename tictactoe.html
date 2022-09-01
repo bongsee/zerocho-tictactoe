@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tictactoe</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    td {
+      border: 1px solid black;
+      width: 40px;
+      height: 40px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    //초기 세팅
+    let turn = 'O';
+
+    //테이블 그리기 & 데이터 세팅
+    const $table = document.createElement('table');
+    const dataArray = [];
+    for (let i = 0; i < 3; i++) {
+      const $tr = document.createElement('tr');
+      const row = [];
+      for (let j = 0; j < 3; j++) {
+        const $td = document.createElement('td');
+        const cell = $td;
+        $tr.append($td);
+        row.push(cell);
+      }
+      $table.append($tr)
+      dataArray.push(row);
+    }
+    document.body.append($table);
+
+    // 게임 결과 화면 출력용
+    $result = document.createElement('div');
+    document.body.append($result);
+
+    //승부 판단 함수
+    const checkWinner = function (target) {
+      /*클릭한 위치 알아내기*/
+      let rowIndex;
+      let cellIndex;
+      dataArray.forEach((rows, ri) => {
+        rows.forEach((cells, ci) => {
+          if (cells === target) {
+            rowIndex = ri;
+            cellIndex = ci;
+          }
+        })
+      })
+
+      /*세로줄 완성*/
+      if (dataArray[0][cellIndex].textContent === turn &&
+        dataArray[1][cellIndex].textContent === turn &&
+        dataArray[2][cellIndex].textContent === turn) {
+        return true;
+      }
+
+      /*가로줄 완성*/
+      if (dataArray[rowIndex][0].textContent === turn &&
+        dataArray[rowIndex][1].textContent === turn &&
+        dataArray[rowIndex][2].textContent === turn) {
+        return true;
+      }
+
+      /*대각선 완성1*/
+      if (dataArray[0][0].textContent === turn &&
+        dataArray[1][1].textContent === turn &&
+        dataArray[2][2].textContent === turn) {
+        return true;
+      }
+
+      /*대각선 완성1*/
+      if (dataArray[0][2].textContent === turn &&
+        dataArray[1][1].textContent === turn &&
+        dataArray[2][0].textContent === turn) {
+        return true;
+      }
+
+      return false;
+    }
+
+    //무승부 판단 함수
+    const checkDraw = function () {
+      let count = 0;
+      dataArray.forEach((row) => {
+        row.forEach((cell) => {
+          if (cell.textContent) {
+            count++;
+          }
+        })
+      })
+      if (count === 9) return true;
+    }
+
+
+    //클릭 이벤트 함수
+    const onClickTable = function (event) {
+      //화면 표시
+      event.target.textContent = turn;
+
+      //승부 판단
+      const isWinner = checkWinner(event.target);
+      //승자가 있을 때
+      if (isWinner) {
+        $result.textContent = `Winner is ${turn} !`;
+        $table.removeEventListener('click', onClickTable);
+      }
+
+      //무승부 판단
+      const isDraw = checkDraw();
+      if (isDraw) {
+        $result.textContent = `Draw !`;
+        $table.removeEventListener('click', onClickTable);
+      }
+
+      //턴 넘기기
+      turn = turn === 'O' ? 'X' : 'O';
+    }
+    $table.addEventListener('click', onClickTable)
+  </script>
+</body>
+
+</html>
